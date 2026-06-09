@@ -144,3 +144,13 @@ a {
 .bar-pulse {
   animation: barPulse 1.1s ease-in-out infinite;
 }
+
+/* 高阶进化光晕：神圣感「光环 + 旋转光芒」 */
+@keyframes auraPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.5; }
+  50%      { transform: translate(-50%, -50%) scale(1.12);  opacity: 0.85; }
+}
+@keyframes auraSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}

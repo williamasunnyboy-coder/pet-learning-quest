@@ -62,6 +62,9 @@ export default function PetView({ pet, petType, petStage, todayTasks, streak, on
   const effectivePetType = petDef.baseType || petType  // seasonal pets fall back to base art/stories
   const stageDef = petDef.stages[petStage]
   const imgUrl = getPetImageUrl(petType, petStage)
+  // 高阶进化光效等级：终阶=legendary(光环+旋转光芒)，倒数两阶=epic(仅光环)
+  const lastStage = petDef.stages.length - 1
+  const auraTier = petStage >= lastStage ? 'legendary' : petStage >= lastStage - 2 ? 'epic' : null
 
   // Equipped decoration emojis
   const hatItem = decorations?.find(d => d.id === equippedItems?.hat)
@@ -166,6 +169,19 @@ export default function PetView({ pet, petType, petStage, todayTasks, streak, on
         </div>
 
         <div style={{ position: 'relative', display: 'inline-block', cursor: 'pointer' }} onClick={handlePetTap}>
+          {/* 高阶进化光效：epic(阶段6+) 光环；legendary(终阶) 额外旋转光芒 */}
+          {auraTier === 'legendary' && (
+            <div aria-hidden="true" className="pet-rays" style={{
+              ...styles.petRays,
+              backgroundImage: `repeating-conic-gradient(from 0deg, ${petDef.themeAccent}55 0deg 7deg, transparent 7deg 22deg)`,
+            }} />
+          )}
+          {auraTier && (
+            <div aria-hidden="true" className="pet-aura" style={{
+              ...styles.petAura,
+              background: `radial-gradient(circle, transparent 36%, ${petDef.themeAccent}${auraTier === 'legendary' ? '99' : '66'} 52%, transparent 72%)`,
+            }} />
+          )}
           {/* Hat decoration — above the pet */}
           {hatItem && (
             <div style={styles.hatOverlay}>{hatItem.emoji}</div>
@@ -587,6 +603,31 @@ const styles = {
     margin: '0 auto',
     transition: 'filter 0.5s ease',
     mixBlendMode: 'multiply',
+    position: 'relative',
+    zIndex: 1,
+  },
+  petAura: {
+    position: 'absolute',
+    left: '50%', top: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 188, height: 188,
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    zIndex: 0,
+    animation: 'auraPulse 2.6s ease-in-out infinite',
+  },
+  petRays: {
+    position: 'absolute',
+    left: '50%', top: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 210, height: 210,
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    zIndex: 0,
+    opacity: 0.55,
+    WebkitMaskImage: 'radial-gradient(circle, #000 22%, transparent 66%)',
+    maskImage: 'radial-gradient(circle, #000 22%, transparent 66%)',
+    animation: 'auraSpin 9s linear infinite',
   },
   speechBubble: {
     position: 'absolute',

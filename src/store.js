@@ -103,6 +103,17 @@ export function clearPinCode() {
   } catch {}
 }
 
+// ─── 会员（解锁稀有 / 限定宠物）─────────────────────
+const MEMBERSHIP_KEY = 'petMembership'
+
+export function getMembership() {
+  try { return localStorage.getItem(MEMBERSHIP_KEY) === '1' } catch { return false }
+}
+
+export function setMembership(on) {
+  try { localStorage.setItem(MEMBERSHIP_KEY, on ? '1' : '0') } catch { /* localStorage 不可用时忽略 */ }
+}
+
 // ─── 数据导出 / 导入 ──────────────────────────────
 export function exportData(state) {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' })

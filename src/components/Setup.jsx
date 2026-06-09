@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { PET_TYPES, getPetImageUrl, isSeasonalActive, seasonalInfo } from '../store'
+import { PET_TYPES, getPetImageUrl, isSeasonalActive, seasonalInfo, getMembership, setMembership } from '../store'
 import { lookupClassCode, DEMO_CLASS_CODE } from '../teacher-store'
 import PetImage from './PetImage'
+import PaywallModal from './PaywallModal'
 import ModeSelect from './ModeSelect'
 import { MODE_META } from '../constants/mode-meta'
 import { MODE } from '../constants/modes'
@@ -18,6 +19,21 @@ export default function Setup({ onSetup }) {
   const [classInfo, setClassInfo] = useState(null)
   const [classErr, setClassErr] = useState('')
   const [classLookingUp, setClassLookingUp] = useState(false)
+  const [member, setMember] = useState(getMembership)
+  const [paywallFor, setPaywallFor] = useState(null)   // 被点击的会员专属宠物 key
+
+  // 选择宠物：稀有宠（isPremium）未开通会员则拦截到付费墙
+  function pickPet(key) {
+    if (PET_TYPES[key].isPremium && !member) { setPaywallFor(key); return }
+    setPetType(key)
+  }
+
+  function unlockMembership() {
+    setMembership(true)
+    setMember(true)
+    if (paywallFor) setPetType(paywallFor)   // 解锁后顺势选中刚才点的宠物
+    setPaywallFor(null)
+  }
 
   const selectedPet = PET_TYPES[petType]
   const modeInfo = MODE_META[mode]
@@ -225,6 +241,7 @@ export default function Setup({ onSetup }) {
                 const selected = petType === key
                 const info = seasonalInfo(p)
                 const seasonActive = info ? isSeasonalActive(p) : false
+                const locked = p.isPremium && !member
                 return (
                   <button
                     key={key}
@@ -234,9 +251,10 @@ export default function Setup({ onSetup }) {
                         ? `2px solid ${p.themeAccent}`
                         : info ? `2px solid ${seasonActive ? '#faad14' : '#d9d9d9'}` : '2px solid #eee',
                       background: selected ? p.theme : '#fafafa',
-                      opacity: info && !seasonActive ? 0.65 : 1,
+                      opacity: (info && !seasonActive) || locked ? 0.7 : 1,
                     }}
-                    onClick={() => setPetType(key)}
+                    onClick={() => pickPet(key)}
+                    aria-label={locked ? `${p.name}（会员专属，需开通会员解锁）` : p.name}
                   >
                     <div style={{ position: 'relative', display: 'inline-block' }}>
                       <PetImage
@@ -244,7 +262,7 @@ export default function Setup({ onSetup }) {
                         alt={p.name}
                         style={styles.petOptionImg}
                       />
-                      {p.isPremium && <span style={styles.premiumBadge}>💎</span>}
+                      {p.isPremium && <span style={styles.premiumBadge}>{locked ? '🔒' : '💎'}</span>}
                       {info && (
                         <span style={{
                           ...styles.premiumBadge,
@@ -299,6 +317,14 @@ export default function Setup({ onSetup }) {
         </div>
 
       </div>
+
+      {paywallFor && (
+        <PaywallModal
+          petName={PET_TYPES[paywallFor]?.name}
+          onUnlock={unlockMembership}
+          onClose={() => setPaywallFor(null)}
+        />
+      )}
     </div>
   )
 }
