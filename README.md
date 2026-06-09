@@ -11,7 +11,7 @@
 一套宠物养成激励系统，面向 6–12 岁儿童的家庭学习场景，**一份状态、四端协同**。
 A single pet-progression system spanning **four synchronized clients** — child, parent, teacher, and smartwatch.
 
-> 🎞️ **项目介绍幻灯片 / Slides**（HTML，方向键翻页）：[项目介绍.html](项目介绍.html)
+> 🎞️ **项目介绍幻灯片 / Slides**（HTML，方向键翻页，23 页）：[中文版](项目介绍-中文.html) · [English](项目介绍-EN.html)
 
 ---
 
