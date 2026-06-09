@@ -463,7 +463,6 @@ const styles = {
     objectFit: 'contain',
     display: 'block',
     margin: '0 auto 8px',
-    mixBlendMode: 'multiply',
   },
   previewName: { fontWeight: 700, fontSize: 15, marginBottom: 6 },
   previewStages: { display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap' },
@@ -493,7 +492,6 @@ const styles = {
     width: 52,
     height: 52,
     objectFit: 'contain',
-    mixBlendMode: 'multiply',
     display: 'block',
   },
   premiumBadge: {

@@ -3,7 +3,9 @@ import { bridgeGetTasks, bridgeReportDone, bridgePublishPresence } from './teach
 import { MODE, isValidMode, isAutoConfirmMode } from './constants/modes'
 import { migrate, CURRENT_SCHEMA_VERSION } from './state-migrations'
 
-const BASE_URL = 'https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets'
+// 本地托管的透明底宠物图（已抠白底，可在任意深/浅背景上自然融合）
+// 用 Vite 注入的 BASE_URL 适配子目录部署（dev='/'，prod='/pet-garden/'）
+const BASE_URL = `${import.meta.env.BASE_URL || '/'}pets`
 
 function loadAdminConfig() {
   try { return JSON.parse(localStorage.getItem('petAdminConfig') || '{}') } catch { return {} }

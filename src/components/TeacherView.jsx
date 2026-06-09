@@ -267,7 +267,7 @@ function PetWallTab({ currentClass }) {
                 <img
                   src={getPetImageUrl(p.petType, p.petStage)}
                   alt={p.petName}
-                  style={{ width: 80, height: 80, objectFit: 'contain', mixBlendMode: 'multiply', display: 'block', margin: '0 auto' }}
+                  style={{ width: 80, height: 80, objectFit: 'contain', display: 'block', margin: '0 auto' }}
                 />
                 <div style={{ fontSize: 13, fontWeight: 800, marginTop: 4, color: '#1a1a2e' }}>
                   {p.petName || def.name}

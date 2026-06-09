@@ -269,7 +269,6 @@ const S = {
     width: 64,
     height: 64,
     objectFit: 'contain',
-    mixBlendMode: 'multiply',
     flexShrink: 0,
   },
   info: { flex: 1, minWidth: 0 },

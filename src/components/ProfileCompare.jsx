@@ -82,7 +82,7 @@ const styles = {
     margin: '0 auto',
     overflow: 'hidden',
   },
-  petImg: { width: 64, height: 64, objectFit: 'contain', mixBlendMode: 'multiply' },
+  petImg: { width: 64, height: 64, objectFit: 'contain' },
   profileName: { fontSize: 14, fontWeight: 800, color: '#1a1a2e', marginTop: 8 },
   childName: { fontSize: 11, color: '#888', marginTop: 2 },
   statRow: { display: 'flex', justifyContent: 'center', gap: 14, margin: '10px 0 8px' },

@@ -194,7 +194,7 @@ const S = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0, overflow: 'hidden',
   },
-  petImg: { width: 62, height: 62, objectFit: 'contain', mixBlendMode: 'multiply' },
+  petImg: { width: 62, height: 62, objectFit: 'contain' },
   reportName: { fontSize: 17, fontWeight: 800, color: '#1a1a2e', lineHeight: 1.3 },
   petMeta: { fontSize: 12, color: '#999', marginTop: 2 },
   stageTag: {

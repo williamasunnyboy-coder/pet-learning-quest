@@ -161,7 +161,7 @@ function PetsTab({ pets, setPets }) {
             <img
               src={getPetImageUrl(key, 0)}
               alt={pet.name}
-              style={{ width: 60, height: 60, objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }}
+              style={{ width: 60, height: 60, objectFit: 'contain', flexShrink: 0 }}
             />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 11, color: '#bbb', marginBottom: 6, fontFamily: 'monospace' }}>ID: {key}</div>
@@ -210,7 +210,7 @@ function PetsTab({ pets, setPets }) {
               <div key={idx} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <img
                   src={getPetImageUrl(key, idx)}
-                  style={{ width: 34, height: 34, objectFit: 'contain', mixBlendMode: 'multiply', flexShrink: 0 }}
+                  style={{ width: 34, height: 34, objectFit: 'contain', flexShrink: 0 }}
                 />
                 <div style={{ ...S.stageChip, background: pet.themeAccent }}>阶段 {idx + 1}</div>
                 <input
@@ -489,7 +489,7 @@ function SaveTab({ appState, setAppState, onReset }) {
 
         {/* Pet type badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '14px 0 20px', padding: '10px 14px', background: '#f9f9f9', borderRadius: 10 }}>
-          <img src={getPetImageUrl(appState.petType, 0)} style={{ width: 36, height: 36, objectFit: 'contain', mixBlendMode: 'multiply' }} />
+          <img src={getPetImageUrl(appState.petType, 0)} style={{ width: 36, height: 36, objectFit: 'contain' }} />
           <div>
             <div style={{ fontSize: 13, fontWeight: 700 }}>{petDef?.name || appState.petType}</div>
             <div style={{ fontSize: 12, color: '#aaa' }}>宠物类型（不可在此修改）</div>

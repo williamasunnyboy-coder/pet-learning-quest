@@ -133,7 +133,6 @@ const styles = {
     position: 'relative',
     zIndex: 1,
     filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.15))',
-    mixBlendMode: 'multiply',
   },
   stageName: {
     fontSize: 24,

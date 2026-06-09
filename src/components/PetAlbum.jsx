@@ -41,7 +41,7 @@ const styles = {
     textAlign: 'center',
     boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
   },
-  img: { width: 60, height: 60, objectFit: 'contain', mixBlendMode: 'multiply', display: 'block', margin: '0 auto' },
+  img: { width: 60, height: 60, objectFit: 'contain', display: 'block', margin: '0 auto' },
   petName: { fontSize: 12, fontWeight: 700, color: '#1a1a2e', marginTop: 6 },
   stageName: { fontSize: 10, color: '#667eea', marginTop: 2, fontWeight: 600 },
   date: { fontSize: 9, color: '#bbb', marginTop: 3 },

@@ -748,7 +748,7 @@ const styles = {
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  petAvatar: { width: 72, height: 72, objectFit: 'contain', mixBlendMode: 'multiply' },
+  petAvatar: { width: 72, height: 72, objectFit: 'contain' },
   alertCard: {
     background: '#fffbe6',
     border: '2px solid #ffe58f',

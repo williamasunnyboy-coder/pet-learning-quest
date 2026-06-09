@@ -602,7 +602,6 @@ const styles = {
     display: 'block',
     margin: '0 auto',
     transition: 'filter 0.5s ease',
-    mixBlendMode: 'multiply',
     position: 'relative',
     zIndex: 1,
   },

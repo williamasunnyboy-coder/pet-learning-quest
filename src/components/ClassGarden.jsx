@@ -137,7 +137,7 @@ const S = {
   },
   petImg: {
     width: 70, height: 70,
-    objectFit: 'contain', mixBlendMode: 'multiply',
+    objectFit: 'contain',
     display: 'block', margin: '0 auto 4px',
   },
   petName: { fontSize: 14, fontWeight: 800, color: '#1a1a2e' },
