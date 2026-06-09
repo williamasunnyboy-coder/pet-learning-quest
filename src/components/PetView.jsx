@@ -504,7 +504,7 @@ function TaskItem({ task, accent, onDone, appMode = MODE.FAMILY }) {
         <div style={{ ...styles.taskName, textDecoration: task.status === 'confirmed' ? 'line-through' : 'none', color: task.status === 'confirmed' ? '#aaa' : '#1a1a2e' }}>
           {task.name}
         </div>
-        <div style={{ fontSize: 12, color: '#aaa' }}>+{task.points} 经验</div>
+        <div style={{ fontSize: 12, color: '#777' }}>+{task.points} 经验</div>
       </div>
       <button
         style={{
@@ -639,10 +639,10 @@ const styles = {
   badge: { color: '#fff', borderRadius: 999, padding: '2px 10px', fontSize: 13 },
   empty: { color: '#bbb', textAlign: 'center', padding: '20px 0', fontSize: 14 },
   taskRow: { display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid #f5f5f5' },
-  taskIcon: { fontSize: 22, flexShrink: 0 },
+  taskIcon: { fontSize: 24, flexShrink: 0 },
   taskInfo: { flex: 1, minWidth: 0 },
-  taskName: { fontWeight: 600, fontSize: 14 },
-  taskBtn: { padding: '6px 12px', borderRadius: 8, border: 'none', fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 },
+  taskName: { fontWeight: 600, fontSize: 15 },
+  taskBtn: { minHeight: 44, padding: '10px 18px', borderRadius: 10, border: 'none', fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' },
   tip: { background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 12, padding: '10px 14px', fontSize: 13, color: '#ad6800' },
   achGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 },
   achItem: {

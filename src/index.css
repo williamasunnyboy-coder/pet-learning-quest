@@ -79,6 +79,35 @@ body {
 button { font-family: inherit; }
 input { font-family: inherit; }
 
+/* ── 无障碍：键盘聚焦时显示清晰焦点环（鼠标点击不触发） ──
+   用 !important 以覆盖个别组件内联的 outline:none */
+:focus-visible {
+  outline: 3px solid #4c6ef5 !important;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* 触控优化：去掉移动端点击的灰色高亮 + 双击缩放延迟，适合儿童快速点按 */
+button,
+[role="button"],
+input,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 无障碍：尊重系统「减少动态效果」设置，关闭装饰性动画 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
