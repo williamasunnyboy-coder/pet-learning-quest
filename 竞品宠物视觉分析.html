@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竞品宠物视觉风格分析报告</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 60px 40px 50px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 15px; margin-top: 8px; }
+  .hero-tags { display: flex; gap: 10px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
+  .tag {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* Layout */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 48px 0 32px; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-sub { color: #888; font-size: 14px; margin-bottom: 28px; }
+  .divider { height: 1px; background: #e8e8e8; margin: 40px 0; }
+
+  /* Brand header */
+  .brand-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .brand-logo {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .brand-info h3 { font-size: 18px; font-weight: 700; }
+  .brand-info p { font-size: 13px; color: #888; margin-top: 2px; }
+  .brand-badges { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .badge {
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .badge-green { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+  .badge-blue { background: #e6f7ff; color: #096dd9; border: 1px solid #91d5ff; }
+  .badge-orange { background: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
+  .badge-red { background: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; }
+  .badge-purple { background: #f9f0ff; color: #531dab; border: 1px solid #d3adf7; }
+
+  /* Pet grid */
+  .pet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .pet-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 12px 12px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .pet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  .pet-card img {
+    width: 100px; height: 100px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px;
+  }
+  .pet-card .pet-name { font-weight: 700; font-size: 14px; }
+  .pet-card .pet-meta { font-size: 12px; color: #aaa; margin-top: 3px; }
+  .pet-card .pet-level {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #f5f5f5;
+    color: #666;
+  }
+
+  /* Evolution row */
+  .evo-row {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+  }
+  .evo-row h4 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #444; }
+  .evo-stages {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .evo-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+  .evo-stage img {
+    width: 90px; height: 90px;
+    object-fit: contain;
+  }
+  .evo-stage .lv-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 6px;
+  }
+  .evo-arrow {
+    font-size: 20px;
+    color: #ccc;
+    padding: 0 4px;
+    margin-top: -20px;
+    flex-shrink: 0;
+  }
+
+  /* Style card for non-image competitors */
+  .style-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+  }
+  .style-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .style-item { display: flex; gap: 12px; align-items: flex-start; }
+  .style-icon { font-size: 28px; flex-shrink: 0; }
+  .style-text .label { font-weight: 700; font-size: 14px; }
+  .style-text .desc { font-size: 13px; color: #666; margin-top: 2px; }
+
+  /* Comparison table */
+  .compare-table {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .compare-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .compare-table th {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    color: #fff;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 700;
+  }
+  .compare-table td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: #fafafa; }
+  .star { color: #faad14; }
+  .highlight-row td { background: linear-gradient(90deg, #fff7e6, #fffbe6) !important; font-weight: 600; }
+
+  /* Positioning chart */
+  .position-chart {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 65%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .chart-inner {
+    position: absolute;
+    inset: 0;
+  }
+  .axis-h, .axis-v {
+    position: absolute;
+    background: #e0e0e0;
+  }
+  .axis-h { height: 1px; width: 90%; left: 5%; top: 50%; }
+  .axis-v { width: 1px; height: 90%; top: 5%; left: 50%; }
+  .axis-label {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+  }
+  .dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: default;
+  }
+  .dot-circle {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .dot-label {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.9);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* Insights */
+  .insights { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .insight-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-left: 4px solid;
+  }
+  .insight-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .insight-card p { font-size: 13px; color: #555; line-height: 1.7; }
+
+  /* Duolingo design image */
+  .design-img-wrap {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+  }
+  .design-img-wrap img { width: 100%; display: block; }
+  .design-img-caption {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #888;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* Monster mockup for ClassDojo */
+  .monster-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .monster-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 999px;
+    padding: 8px 16px 8px 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .monster-emoji { font-size: 28px; }
+
+  /* Footer */
+  footer {
+    background: #1a1a2e;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 20px 36px; }
+    .hero h1 { font-size: 24px; }
+    .pet-grid { grid-template-columns: repeat(3, 1fr); }
+    .pet-card img { width: 70px; height: 70px; }
+    .compare-table { font-size: 12px; }
+    .compare-table th, .compare-table td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🐾 竞品宠物视觉风格分析</h1>
+  <p>面向 6–12 岁儿童学习激励产品 · 11款竞品 · 宠物美术设计横向对比</p>
+  <div class="hero-tags">
+    <span class="tag">酷课堂宠物园</span>
+    <span class="tag">ClassDojo</span>
+    <span class="tag">Prodigy Math</span>
+    <span class="tag">Duolingo</span>
+    <span class="tag">Homer</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ① 酷课堂 -->
+  <div class="section">
+    <div class="section-title">① 酷课堂·班级宠物园 <span style="font-size:14px;color:#52c41a;font-weight:600;">国内最强竞品</span></div>
+    <div class="section-sub">26种宠物 · 8级成长体系 · 日韩系卡通矢量插画 · 开源免费</div>
+
+    <div class="brand-header">
+      <div class="brand-logo" style="background:#fff3e0;">🐾</div>
+      <div class="brand-info">
+        <h3>酷课堂·班级宠物园</h3>
+        <p>国内最完善的宠物养成课堂工具，2026年引发广泛媒体关注</p>
+        <div class="brand-badges">
+          <span class="badge badge-green">大眼萌宠风</span>
+          <span class="badge badge-blue">日韩卡通</span>
+          <span class="badge badge-orange">8级进化</span>
+          <span class="badge badge-purple">中国神兽</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;color:#555;">🐶 普通动物系（Lv1 初始形态）</div>
+    <div class="pet-grid">
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/west-highland/lv1.png" alt="西高地" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐶</text></svg>'">
+        <div class="pet-name">西高地梗犬</div>
+        <div class="pet-meta">白色 · 红蝴蝶结</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/call-duck/lv1.png" alt="柯尔鸭" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦆</text></svg>'">
+        <div class="pet-name">柯尔鸭</div>
+        <div class="pet-meta">金黄 · 圆滚可爱</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/corgi/lv1.png" alt="柯基" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐕</text></svg>'">
+        <div class="pet-name">柯基</div>
+        <div class="pet-meta">橙白配色 · 腮红</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/samoyed/lv1.png" alt="萨摩耶" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐩</text></svg>'">
+        <div class="pet-name">萨摩耶</div>
+        <div class="pet-meta">白棉花糖 · 粉耳花</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/red-panda/lv1.png" alt="小熊猫" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦊</text></svg>'">
+        <div class="pet-name">小熊猫</div>
+        <div class="pet-meta">橙红 · 绿蝴蝶结</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+    </div>
+
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;margin-top:8px;color:#555;">🐉 中国神兽系（Lv1 初始形态）</div>
+    <div class="pet-grid">
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/unicorn/lv1.png" alt="独角兽" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦄</text></svg>'">
+        <div class="pet-name">独角兽</div>
+        <div class="pet-meta">粉色少女 · 金角</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/white-tiger/lv1.png" alt="白虎" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐯</text></svg>'">
+        <div class="pet-name">白虎</div>
+        <div class="pet-meta">黑白虎纹 · 大眼萌</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/azure-dragon/lv1.png" alt="青龙" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐲</text></svg>'">
+        <div class="pet-name">青龙</div>
+        <div class="pet-meta">蓝绿胖龙 · 金色犄角</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+      <div class="pet-card">
+        <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/vermilion-bird/lv1.png" alt="朱雀" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦅</text></svg>'">
+        <div class="pet-name">朱雀</div>
+        <div class="pet-meta">红橙火鸟 · 金铃铛</div>
+        <span class="pet-level">Lv1 幼崽</span>
+      </div>
+    </div>
+
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;margin-top:8px;color:#555;">⬆️ 进化对比：Lv1 → Lv8</div>
+
+    <div class="evo-row">
+      <h4>西高地梗犬：从小奶狗到圣翼天使</h4>
+      <div class="evo-stages">
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/west-highland/lv1.png" alt="lv1" loading="lazy">
+          <span class="lv-badge" style="background:#f5f5f5;color:#666;">Lv1 幼崽</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/west-highland/lv4.png" alt="lv4" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><text y=%22.9em%22 font-size=%2270%22>🐶</text></svg>'">
+          <span class="lv-badge" style="background:#e6f7ff;color:#096dd9;">Lv4 成长</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/west-highland/lv8.png" alt="lv8" loading="lazy">
+          <span class="lv-badge" style="background:#fff7e6;color:#d46b08;">Lv8 神圣 👑</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="evo-row">
+      <h4>独角兽：从粉色小马到彩虹飞马</h4>
+      <div class="evo-stages">
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/unicorn/lv1.png" alt="lv1" loading="lazy">
+          <span class="lv-badge" style="background:#f5f5f5;color:#666;">Lv1 幼崽</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/unicorn/lv4.png" alt="lv4" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><text y=%22.9em%22 font-size=%2270%22>🦄</text></svg>'">
+          <span class="lv-badge" style="background:#e6f7ff;color:#096dd9;">Lv4 成长</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/unicorn/lv8.png" alt="lv8" loading="lazy">
+          <span class="lv-badge" style="background:#fff7e6;color:#d46b08;">Lv8 神圣 👑</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="evo-row">
+      <h4>白虎：从软萌幼崽到金翅神兽</h4>
+      <div class="evo-stages">
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/white-tiger/lv1.png" alt="lv1" loading="lazy">
+          <span class="lv-badge" style="background:#f5f5f5;color:#666;">Lv1 幼崽</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/white-tiger/lv4.png" alt="lv4" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><text y=%22.9em%22 font-size=%2270%22>🐯</text></svg>'">
+          <span class="lv-badge" style="background:#e6f7ff;color:#096dd9;">Lv4 成长</span>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-stage">
+          <img src="https://raw.githubusercontent.com/prompteric/class-pet-garden/master/public/pets/white-tiger/lv8.png" alt="lv8" loading="lazy">
+          <span class="lv-badge" style="background:#fff7e6;color:#d46b08;">Lv8 神圣 👑</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design rules -->
+    <div class="style-card" style="margin-top:16px;">
+      <h4>🎨 酷课堂宠物设计规律总结</h4>
+      <div class="style-grid">
+        <div class="style-item">
+          <span class="style-icon">👁️</span>
+          <div class="style-text">
+            <div class="label">大眼+腮红统一语言</div>
+            <div class="desc">所有宠物共用圆形大眼睛+腮红，建立"萌"的认知一致性</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">🎀</span>
+          <div class="style-text">
+            <div class="label">初级标配：蝴蝶结/铃铛</div>
+            <div class="desc">低等级宠物统一用红色蝴蝶结/金铃铛作为「可爱」标识</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">👑</span>
+          <div class="style-text">
+            <div class="label">进化三件套：翅膀+皇冠+光晕</div>
+            <div class="desc">高等级宠物统一添加翅膀、金皇冠、发光效果，增强「神圣感」</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">🇨🇳</span>
+          <div class="style-text">
+            <div class="label">中国神兽是差异化亮点</div>
+            <div class="desc">青龙、朱雀、白虎等国风IP，是海外竞品无法复制的本土优势</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ② Duolingo -->
+  <div class="section">
+    <div class="section-title">② Duolingo — Duo 猫头鹰</div>
+    <div class="section-sub">全球最成功游戏化学习App · 5000万DAU · 吉祥物情感绑定标杆</div>
+
+    <div class="brand-header">
+      <div class="brand-logo" style="background:#e8f5e9;">🦉</div>
+      <div class="brand-info">
+        <h3>Duolingo · Duo the Owl</h3>
+        <p>官方设计哲学：Bold, Bouncy, and Bright</p>
+        <div class="brand-badges">
+          <span class="badge badge-green">草绿色 #58CC02</span>
+          <span class="badge badge-blue">扁平矢量</span>
+          <span class="badge badge-orange">全圆弧无锐角</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="design-img-wrap">
+      <img src="https://storage.ghost.io/c/7a/33/7a33d0f4-927d-4fe8-a6bf-96131b5e76d4/content/images/2020/06/04-cat-shapes-1.png" alt="Duolingo设计复杂度标准" loading="lazy">
+      <div class="design-img-caption">📐 Duolingo 官方设计准则：14个形状是「甜蜜点」——6个太抽象，30个太复杂。这个标准适用于所有宠物角色设计。</div>
+    </div>
+
+    <div class="style-card">
+      <h4>🎨 Duo 角色设计核心原则</h4>
+      <div class="style-grid">
+        <div class="style-item">
+          <span class="style-icon">🟢</span>
+          <div class="style-text">
+            <div class="label">单一主色统治</div>
+            <div class="desc">草绿色 #58CC02 全身，白色大圆眼，橙喙——三色极简，识别度极高</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">⭕</span>
+          <div class="style-text">
+            <div class="label">100% 圆润几何</div>
+            <div class="desc">椭圆身体+圆翅膀，脚趾分离悬浮，无任何尖锐边缘，视觉"弹性感"强</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">😠</span>
+          <div class="style-text">
+            <div class="label">眉毛驱动情绪</div>
+            <div class="desc">全部情绪靠眉弓角度变化表达，不改变身体，表达效率极高</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">💀</span>
+          <div class="style-text">
+            <div class="label">「死亡营销」——情感绑定秘诀</div>
+            <div class="desc">Streak 断了 Duo 会哭，引发17亿次曝光。情感依附 > 游戏机制</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ③ ClassDojo -->
+  <div class="section">
+    <div class="section-title">③ ClassDojo — 怪兽 Avatar</div>
+    <div class="section-sub">全球最大课堂工具 · 180国 · 5100万学生 · 35种怪兽可自定义</div>
+
+    <div class="brand-header">
+      <div class="brand-logo" style="background:#e8eaf6;">👾</div>
+      <div class="brand-info">
+        <h3>ClassDojo · Monster Avatars</h3>
+        <p>2022年腾讯领投$1.25亿，估值$12.5亿独角兽</p>
+        <div class="brand-badges">
+          <span class="badge badge-blue">35种怪兽</span>
+          <span class="badge badge-purple">高度可定制</span>
+          <span class="badge badge-orange">全彩扁平风</span>
+          <span class="badge badge-red">偏「异形」非萌宠</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h4>🎨 ClassDojo 怪兽视觉特点</h4>
+      <div class="monster-grid" style="margin-bottom:20px;">
+        <div class="monster-pill"><span class="monster-emoji">🟢</span><span>绿色独眼怪 · 圆滚身体</span></div>
+        <div class="monster-pill"><span class="monster-emoji">💜</span><span>紫色猫形怪 · 三角耳朵</span></div>
+        <div class="monster-pill"><span class="monster-emoji">🟠</span><span>橙色触角怪 · 六眼</span></div>
+        <div class="monster-pill"><span class="monster-emoji">🔵</span><span>蓝色武士怪 · 空手道</span></div>
+        <div class="monster-pill"><span class="monster-emoji">🩷</span><span>粉色羽毛怪 · 翅膀</span></div>
+        <div class="monster-pill"><span class="monster-emoji">🔴</span><span>红色尖牙怪 · 犄角</span></div>
+      </div>
+      <div class="style-grid">
+        <div class="style-item">
+          <span class="style-icon">🎨</span>
+          <div class="style-text">
+            <div class="label">每种怪兽独占一色</div>
+            <div class="desc">35种配色不重复，孩子选怪兽=选颜色，个性化强</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">👁️</span>
+          <div class="style-text">
+            <div class="label">1-6只眼睛变化</div>
+            <div class="desc">独特的多眼设计，打破传统对称，增加辨识度</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">✂️</span>
+          <div class="style-text">
+            <div class="label">模块化自定义</div>
+            <div class="desc">头部/眼睛/嘴巴/配件独立更换，组合数量超千种</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">⚠️</span>
+          <div class="style-text">
+            <div class="label">弱点：无成长/进化</div>
+            <div class="desc">怪兽不会进化升级，缺乏长期养成黏性，是最大软肋</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ④ Prodigy Math -->
+  <div class="section">
+    <div class="section-title">④ Prodigy Math — 奇幻宠物</div>
+    <div class="section-sub">2000万学生 · 281只宠物 · 做题战斗解锁 · 最优雅的学习+宠物融合模型</div>
+
+    <div class="brand-header">
+      <div class="brand-logo" style="background:#e8f5e9;">⚔️</div>
+      <div class="brand-info">
+        <h3>Prodigy Math · Battle Pets</h3>
+        <p>孩子扮演法师，用数学题施法战斗，宠物是战斗伙伴</p>
+        <div class="brand-badges">
+          <span class="badge badge-green">281只宠物</span>
+          <span class="badge badge-blue">奇幻RPG风</span>
+          <span class="badge badge-purple">元素系分类</span>
+          <span class="badge badge-orange">进化体系</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h4>🎨 Prodigy 宠物视觉特点</h4>
+      <div class="style-grid">
+        <div class="style-item">
+          <span class="style-icon">🌿</span>
+          <div class="style-text">
+            <div class="label">Forest Neek（植物系）</div>
+            <div class="desc">小型漂浮树枝生物，头顶绿叶，橙色腮红，圆润可爱</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">❄️</span>
+          <div class="style-text">
+            <div class="label">Ice Neek（冰系）</div>
+            <div class="desc">雪球造型，浅蓝白色，头顶三根冰枝，粉色圆肚</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">🦊</span>
+          <div class="style-text">
+            <div class="label">Florafox（植物系 Epic）</div>
+            <div class="desc">石灰绿狐狸，尾巴是玫瑰花苞，史诗级外观，付费限定</div>
+          </div>
+        </div>
+        <div class="style-item">
+          <span class="style-icon">🐺</span>
+          <div class="style-text">
+            <div class="label">Luminite → Luminex（冰系进化链）</div>
+            <div class="desc">深灰小狼崽→三阶进化，付费解锁更多形态，变现核心</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:#f9f0ff;border-radius:10px;border-left:4px solid #722ed1;">
+        <strong>🔑 Prodigy 最重要的设计哲学：</strong><br>
+        <span style="font-size:13px;color:#555;line-height:1.8;">宠物不是装饰，是<strong>「战斗伙伴」</strong>。孩子做数学题=给宠物充魔法值=宠物打赢怪物。学习行为与宠物状态<strong>完全硬绑定</strong>，内驱力极强。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ⑤ 横向对比 -->
+  <div class="section">
+    <div class="section-title">⑤ 视觉风格横向对比</div>
+    <div class="section-sub">从美术风格、情感深度、进化机制三个维度综合评估</div>
+
+    <div class="compare-table">
+      <table>
+        <thead>
+          <tr>
+            <th>产品</th>
+            <th>风格定位</th>
+            <th>宠物数量</th>
+            <th>成长/进化</th>
+            <th>萌宠感</th>
+            <th>情感深度</th>
+            <th>国风元素</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>酷课堂宠物园</strong></td>
+            <td>日韩卡通插画</td>
+            <td>26种</td>
+            <td>8级，变化显著</td>
+            <td><span class="star">★★★★★</span></td>
+            <td><span class="star">★★★★</span></td>
+            <td>✅ 龙/虎/朱雀</td>
+          </tr>
+          <tr>
+            <td><strong>ClassDojo</strong></td>
+            <td>欧美扁平怪兽</td>
+            <td>35种</td>
+            <td>❌ 无进化</td>
+            <td><span class="star">★★★</span></td>
+            <td><span class="star">★★★</span></td>
+            <td>❌</td>
+          </tr>
+          <tr>
+            <td><strong>Prodigy Math</strong></td>
+            <td>奇幻RPG插画</td>
+            <td>281只</td>
+            <td>多阶进化链</td>
+            <td><span class="star">★★★★</span></td>
+            <td><span class="star">★★★★★</span></td>
+            <td>❌</td>
+          </tr>
+          <tr>
+            <td><strong>Duolingo Duo</strong></td>
+            <td>极简矢量几何</td>
+            <td>1只(+配角)</td>
+            <td>❌ 无进化</td>
+            <td><span class="star">★★★★</span></td>
+            <td><span class="star">★★★★★</span></td>
+            <td>❌</td>
+          </tr>
+          <tr>
+            <td><strong>Homer Wickle</strong></td>
+            <td>糖果色主题乐园</td>
+            <td>1只(可定制)</td>
+            <td>基础成长</td>
+            <td><span class="star">★★★★</span></td>
+            <td><span class="star">★★★</span></td>
+            <td>❌</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>🎯 我们的目标</strong></td>
+            <td>日韩风+中国元素</td>
+            <td>5→20种(规划)</td>
+            <td>4阶→8阶(规划)</td>
+            <td><span class="star">★★★★★</span></td>
+            <td><span class="star">★★★★★</span></td>
+            <td>✅ 重点方向</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ⑥ 定位图 -->
+  <div class="section">
+    <div class="section-title">⑥ 宠物风格定位坐标图</div>
+    <div class="section-sub">X轴：中国本土感 ↔ 西方国际感 · Y轴：萌宠感 ↔ 战斗游戏感</div>
+
+    <div class="position-chart">
+      <div class="chart-wrap">
+        <div class="chart-inner">
+          <!-- Axes -->
+          <div class="axis-h"></div>
+          <div class="axis-v"></div>
+          <!-- Labels -->
+          <div class="axis-label" style="top:46%;left:2%;">🇨🇳 中国本土</div>
+          <div class="axis-label" style="top:46%;right:0%;">🌍 国际通用</div>
+          <div class="axis-label" style="top:3%;left:50%;transform:translateX(-50%);">⚔️ 游戏/战斗感</div>
+          <div class="axis-label" style="bottom:2%;left:50%;transform:translateX(-50%);">🐾 萌宠/情感感</div>
+
+          <!-- Dots -->
+          <div class="dot" style="left:28%;top:22%;">
+            <div class="dot-circle" style="background:#52c41a;"></div>
+            <div class="dot-label" style="color:#389e0d;">酷课堂·神兽系</div>
+          </div>
+          <div class="dot" style="left:35%;top:68%;">
+            <div class="dot-circle" style="background:#1890ff;"></div>
+            <div class="dot-label" style="color:#096dd9;">酷课堂·普通动物</div>
+          </div>
+          <div class="dot" style="left:72%;top:30%;">
+            <div class="dot-circle" style="background:#722ed1;"></div>
+            <div class="dot-label" style="color:#531dab;">Prodigy Math</div>
+          </div>
+          <div class="dot" style="left:78%;top:48%;">
+            <div class="dot-circle" style="background:#fa8c16;"></div>
+            <div class="dot-label" style="color:#d46b08;">ClassDojo</div>
+          </div>
+          <div class="dot" style="left:82%;top:70%;">
+            <div class="dot-circle" style="background:#52c41a;"></div>
+            <div class="dot-label" style="color:#389e0d;">Duolingo Duo</div>
+          </div>
+          <div class="dot" style="left:65%;top:80%;">
+            <div class="dot-circle" style="background:#eb2f96;"></div>
+            <div class="dot-label" style="color:#c41d7f;">Homer Wickle</div>
+          </div>
+          <!-- Us -->
+          <div class="dot" style="left:42%;top:78%;">
+            <div class="dot-circle" style="background:#f5222d;width:18px;height:18px;"></div>
+            <div class="dot-label" style="color:#cf1322;font-size:13px;font-weight:800;">🎯 我们</div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:13px;color:#aaa;margin-top:8px;">我们的目标：中国本土感 × 强萌宠感，填补左下角的空白</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ⑦ 设计建议 -->
+  <div class="section">
+    <div class="section-title">⑦ 对我们产品的宠物设计建议</div>
+    <div class="section-sub">基于竞品视觉分析提炼的核心设计方向</div>
+
+    <div class="insights">
+      <div class="insight-card" style="border-color:#52c41a;">
+        <h4>✅ 沿用酷课堂的成功路线</h4>
+        <p>日韩系大眼萌宠风格在国内6-12岁群体中已被验证有效。大眼+腮红+蝴蝶结是「萌」的最短路径，无需创新风格方向。</p>
+      </div>
+      <div class="insight-card" style="border-color:#1890ff;">
+        <h4>🇨🇳 重点打造中国神兽系列</h4>
+        <p>青龙、白虎、朱雀、玄武等中国神话IP是海外竞品无法复制的本土壁垒，也更容易引发家长的文化认同感和购买欲望。</p>
+      </div>
+      <div class="insight-card" style="border-color:#722ed1;">
+        <h4>⬆️ 进化时刻必须有仪式感</h4>
+        <p>参考酷课堂：Lv1幼崽→Lv8神圣，差异要「震撼」。建议每次进化触发全屏动画+音效+社交分享卡片，这是留存最强时刻。</p>
+      </div>
+      <div class="insight-card" style="border-color:#fa8c16;">
+        <h4>🍖 饥饿状态要「可见地可怜」</h4>
+        <p>参考Duolingo Duo哭泣引发17亿曝光。宠物饥饿时要有专属动画（蔫蔫的、眼神无光），让孩子「心疼到必须完成任务」。</p>
+      </div>
+      <div class="insight-card" style="border-color:#eb2f96;">
+        <h4>💎 稀有宠物是变现核心</h4>
+        <p>参考Prodigy的Mythical Epics：普通宠物免费，稀有/限定宠物付费。「孩子主动要家长买稀有宠」是最强的C端变现飞轮。</p>
+      </div>
+      <div class="insight-card" style="border-color:#f5222d;">
+        <h4>📐 先做精5只，再扩张</h4>
+        <p>MVP阶段：1只普通动物（如柴犬/猫咪）+ 1只中国神兽（如青龙）+ 1只限定（节日兔/年兽）。宁可3只极精美，也不要10只粗糙。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  🐾 竞品宠物视觉风格分析报告 · 宠物学习APP项目 · 2026年5月<br>
+  数据来源：GitHub开源仓库 / 官方设计规范 / Fandom Wiki / App Store
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "宠物学习助手",
+  "short_name": "宠物助手",
+  "description": "让孩子通过养宠物爱上学习",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e0c3fc",
+  "theme_color": "#764ba2",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
