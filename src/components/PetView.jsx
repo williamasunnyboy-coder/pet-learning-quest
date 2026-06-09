@@ -27,25 +27,29 @@ export default function PetView({ pet, petType, petStage, todayTasks, streak, on
   // Streak bonus toast
   useEffect(() => {
     if (!streakBonus) return
+    // 派生 UI：把外部传入的 streakBonus 转成一次性 toast，随后清空来源
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToast({
       icon: '🔥', color: '#ff6b35',
       title: `连续打卡 ${streakBonus.streak} 天！`,
       msg: `奖励 +${streakBonus.bonus} 经验已到账！`,
     })
     clearStreakBonus?.()
-  }, [streakBonus]) // eslint-disable-line
+  }, [streakBonus]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // EXP milestone toast
   useEffect(() => {
     if (!latestExpMilestones?.length) return
     const top = EXP_MILESTONES.filter(m => latestExpMilestones.includes(m.exp)).pop()
+    // 派生 UI：经验里程碑 → 一次性 toast
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (top) setToast({
       icon: '⭐', color: '#faad14',
       title: top.title,
       msg: top.msg.replace('{petName}', pet.name),
     })
     clearExpMilestones?.()
-  }, [latestExpMilestones?.length]) // eslint-disable-line
+  }, [latestExpMilestones?.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Auto-dismiss toast after 3.5 s
   useEffect(() => {

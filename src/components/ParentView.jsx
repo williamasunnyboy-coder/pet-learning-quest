@@ -6,7 +6,7 @@ import { getNotifEnabled, setNotifEnabled, requestNotifPermission } from '../not
 import { lookupClassCode, DEMO_CLASS_CODE } from '../teacher-store'
 import CalendarView from './CalendarView'
 import PetAlbum from './PetAlbum'
-import { MODE_META, MODE_ORDER } from './ModeSelect'
+import { MODE_META, MODE_ORDER } from '../constants/mode-meta'
 import { MODE } from '../constants/modes'
 
 const TASK_ICONS = ['📝', '📚', '✏️', '🎒', '⏰', '🏃', '🎵', '🧩', '🌟', '💪']
@@ -400,7 +400,7 @@ export default function ParentView({
           <div style={styles.empty}>暂无历史数据</div>
         ) : (
           <div style={styles.chartWrap}>
-            {history.map((h, i) => {
+            {history.map((h) => {
               const pct = h.total > 0 ? h.done / h.total : 0
               const dateObj = new Date(h.date)
               const dayLabel = weekDays[dateObj.getDay() === 0 ? 6 : dateObj.getDay() - 1]

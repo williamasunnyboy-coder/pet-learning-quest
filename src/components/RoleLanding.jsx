@@ -11,14 +11,7 @@
  * 老用户（已经 setup 过 = state.initialized）不会看到本页面。
  */
 
-const ROLE_KEY = 'petPreferredRole'
-
-export function getPreferredRole() {
-  try { return localStorage.getItem(ROLE_KEY) } catch { return null }
-}
-export function setPreferredRole(role) {
-  try { localStorage.setItem(ROLE_KEY, role) } catch {}
-}
+import { setPreferredRole } from '../role-prefs'
 
 export default function RoleLanding({ onRoleSelect }) {
   function pick(role) {
@@ -161,7 +154,7 @@ const S = {
   cardTitle: { fontSize: 22, fontWeight: 800, color: '#1a1a2e', margin: '8px 0 4px' },
   cardSubtitle: { fontSize: 13, color: '#888', marginBottom: 14 },
   cardFeatures: {
-    listStyle: 'none', padding: 0, margin: '0 0 18px',
+    listStyle: 'none', margin: '0 0 18px',
     display: 'flex', flexDirection: 'column', gap: 6,
     textAlign: 'left',
     background: '#fafafa', borderRadius: 12,

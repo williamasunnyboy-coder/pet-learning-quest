@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { registerTeacherBridge } from './teacher-bridge'
+import * as teacherStore from './teacher-store'
 
 // Register PWA service worker（用 Vite 注入的 BASE_URL，自动适配子目录部署）
 if ('serviceWorker' in navigator) {
@@ -13,18 +14,16 @@ if ('serviceWorker' in navigator) {
   })
 }
 
-// 教师桥接：仅在学员/教师/家长侧入口按需 lazy-import
-// 纯家庭模式 + 未绑定班级码时，下面这段 import 仍会执行但 chunk 异步加载
-// 避免首屏阻塞
-import('./teacher-store').then(m => {
-  registerTeacherBridge({
-    getTasks: m.getTeacherTasksForCode,
-    reportDone: m.reportCompletion,
-    lookup: m.lookupClassCode,
-    publishPresence: m.publishPetPresence,
-    getPeers: m.getClassPeers,
-  })
-}).catch(() => {})
+// 教师桥接：同步注册，确保 store 首次渲染前 bridge 已就绪。
+// （teacher-store 已被 Setup / ParentView 等首屏组件静态引用，必然进主包，
+//  此前的动态 import 无法真正分割，反而触发 Vite 的 INEFFECTIVE_DYNAMIC_IMPORT 警告。）
+registerTeacherBridge({
+  getTasks: teacherStore.getTeacherTasksForCode,
+  reportDone: teacherStore.reportCompletion,
+  lookup: teacherStore.lookupClassCode,
+  publishPresence: teacherStore.publishPetPresence,
+  getPeers: teacherStore.getClassPeers,
+})
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

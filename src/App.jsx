@@ -4,13 +4,14 @@ import PetView from './components/PetView'
 import ParentView from './components/ParentView'
 import EvolutionModal from './components/EvolutionModal'
 import PinModal from './components/PinModal'
-import RoleLanding, { getPreferredRole } from './components/RoleLanding'
+import RoleLanding from './components/RoleLanding'
+import { getPreferredRole } from './role-prefs'
 const DecorationModal = lazy(() => import('./components/DecorationModal'))
 const MonthlyReport   = lazy(() => import('./components/MonthlyReport'))
 const ProfileCompare  = lazy(() => import('./components/ProfileCompare'))
 import {
   useAppStore, PET_TYPES,
-  getProfiles, saveProfiles, getCurrentProfileId, setCurrentProfileId,
+  getProfiles, getCurrentProfileId, setCurrentProfileId,
   createProfile, deleteProfile,
   hasPinCode, clearPinCode,
   exportData, importData,
@@ -80,7 +81,8 @@ function App() {
       store.recordEvolution(store.petStage, store.pet.name)
     }
     prevStageRef.current = store.petStage
-  }, [store.petStage])
+    // 仅在进化阶段变化时触发；引入整个 store 会造成不必要的重跑
+  }, [store.petStage]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Daily login bonus toast ───────────────────────
   useEffect(() => {

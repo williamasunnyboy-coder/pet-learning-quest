@@ -119,8 +119,10 @@ export function exportData(state) {
 
 export function importData(json, profileId = 'default') {
   try {
-    const data = JSON.parse(json)
-    if (!data.pet || !Array.isArray(data.tasks)) return false
+    const parsed = JSON.parse(json)
+    if (!parsed.pet || !Array.isArray(parsed.tasks)) return false
+    // 老备份可能是旧 schema —— 先升级再落盘，避免导入后缺字段
+    const data = migrate(parsed)
     localStorage.setItem(storageKey(profileId), JSON.stringify({ ...data, initialized: true }))
     return true
   } catch { return false }
@@ -457,8 +459,7 @@ function saveState(state, profileId = 'default') {
   // 只保留最近 30 天任务，防止 localStorage 溢出
   const d = new Date(); d.setDate(d.getDate() - 30)
   const cutoff = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-  // Exclude transient flags from persistence
-  // eslint-disable-next-line no-unused-vars
+  // Exclude transient flags from persistence（_dailyBonusToday 为 rest sibling，不持久化）
   const { _dailyBonusToday, ...stateToSave } = state
   const trimmed = { ...stateToSave, tasks: state.tasks.filter(t => t.date >= cutoff) }
   localStorage.setItem(storageKey(profileId), JSON.stringify(trimmed))
@@ -735,6 +736,9 @@ export function useAppStore(profileId = 'default') {
   }
 
   useEffect(() => {
+    // 挂载时补齐「今日任务」：内部 setState 用函数式更新，已有今日任务则原样返回
+    // （这是一次性初始化同步，非循环渲染，故豁免该规则）
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshDailyTasks()
   }, [])
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import {
   saveTeacherData, clearTeacherData,
   publishClassLink, getClassLinks, getCompletionCount,
@@ -169,7 +169,9 @@ export default function TeacherView({ data, onDataChange }) {
 // ═══════════════════════════════════════════════════
 // 班级宠物墙 —— 教师视角看全班宠物
 // ═══════════════════════════════════════════════════
-function PetWallTab({ data, currentClass }) {
+function PetWallTab({ currentClass }) {
+  // 「今日活跃」判定基准时刻，避免在 render 中直接调用 Date.now()
+  const [now] = useState(() => Date.now())
   // 拉取所有班级的 peers 合集；按当前班级筛选
   const allPeers = currentClass?.code ? getClassPeers(currentClass.code) : {}
   const peersList = Object.entries(allPeers)
@@ -217,7 +219,7 @@ function PetWallTab({ data, currentClass }) {
       }}>
         {[
           { label: '已加入', value: peersList.length, color: '#52c41a' },
-          { label: '今日活跃', value: peersList.filter(p => Date.now() - (p.updatedAt || 0) < 24*60*60*1000).length, color: '#667eea' },
+          { label: '今日活跃', value: peersList.filter(p => now - (p.updatedAt || 0) < 24*60*60*1000).length, color: '#667eea' },
           { label: '最高连击', value: Math.max(0, ...peersList.map(p => p.streak || 0)), color: '#fa8c16' },
           { label: '已进化', value: peersList.filter(p => (p.petStage || 0) >= 2).length, color: '#eb2f96' },
         ].map(s => (
@@ -245,7 +247,7 @@ function PetWallTab({ data, currentClass }) {
           {peersList.map(p => {
             const def = PET_TYPES[p.petType] || PET_TYPES['west-highland']
             const stageName = def.stages[p.petStage]?.name || '幼年期'
-            const active = Date.now() - (p.updatedAt || 0) < 24*60*60*1000
+            const active = now - (p.updatedAt || 0) < 24*60*60*1000
             return (
               <div key={p.id} style={{
                 background: def.theme,

@@ -13,10 +13,15 @@ import { PET_TYPES, getPetImageUrl } from '../store'
 
 export default function ClassGarden({ classCode, currentProfileId, onClose }) {
   const [peers, setPeers] = useState(() => bridgeGetPeers(classCode))
+  // 「今日活跃」判定用的当前时刻：随每次刷新更新，避免在 render 中调用 Date.now()
+  const [renderedAt, setRenderedAt] = useState(() => Date.now())
 
   // 监听变化（其他同学也在打卡时实时刷新）
   useEffect(() => {
-    function refresh() { setPeers(bridgeGetPeers(classCode)) }
+    function refresh() {
+      setPeers(bridgeGetPeers(classCode))
+      setRenderedAt(Date.now())
+    }
     window.addEventListener('storage', refresh)
     window.addEventListener('pet-class-link-changed', refresh)
     const tick = setInterval(refresh, 8000)   // 8 秒兜底刷新
@@ -57,7 +62,7 @@ export default function ClassGarden({ classCode, currentProfileId, onClose }) {
           {entries.map(([id, peer]) => {
             const def = PET_TYPES[peer.petType] || PET_TYPES['west-highland']
             const stageName = def.stages[peer.petStage]?.name || '幼年期'
-            const isActive = Date.now() - (peer.updatedAt || 0) < 24 * 60 * 60 * 1000
+            const isActive = renderedAt - (peer.updatedAt || 0) < 24 * 60 * 60 * 1000
             return (
               <div key={id} style={{ ...S.card, background: def.theme, borderColor: def.themeAccent + '44' }}>
                 {isActive && <span style={S.activeDot} title="今日活跃" aria-label="今日活跃" />}

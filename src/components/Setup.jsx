@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { PET_TYPES, getPetImageUrl, isSeasonalActive, seasonalInfo } from '../store'
 import { lookupClassCode, DEMO_CLASS_CODE } from '../teacher-store'
 import PetImage from './PetImage'
-import ModeSelect, { MODE_META } from './ModeSelect'
+import ModeSelect from './ModeSelect'
+import { MODE_META } from '../constants/mode-meta'
 import { MODE } from '../constants/modes'
 
 const PET_KEYS = Object.keys(PET_TYPES)
@@ -284,7 +285,6 @@ export default function Setup({ onSetup }) {
             if (!visible) return null
             const active = step === n
             const done = step > n
-            const displayN = needsClass ? n : n > 2 ? n - 1 : n
             return (
               <div
                 key={n}

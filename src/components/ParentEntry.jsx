@@ -16,7 +16,7 @@ import {
   hasPinCode,
   exportData, importData,
 } from '../store'
-import { MODE_META } from './ModeSelect'
+import { MODE_META } from '../constants/mode-meta'
 import { MODE } from '../constants/modes'
 import PinModal from './PinModal'
 

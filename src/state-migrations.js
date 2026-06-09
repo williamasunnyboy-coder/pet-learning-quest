@@ -54,7 +54,6 @@ export function migrate(saved) {
     if (typeof migrations[v] === 'function') {
       try { s = migrations[v](s) }
       catch (err) {
-        // eslint-disable-next-line no-console
         console.warn(`[migrate] step ${v} failed, keeping previous shape`, err)
       }
     }
