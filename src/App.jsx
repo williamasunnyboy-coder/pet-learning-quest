@@ -28,6 +28,7 @@ import './App.css'
 const AdminPanel   = lazy(() => import('./components/AdminPanel'))
 const TeacherPanel = lazy(() => import('./components/TeacherPanel'))
 const ParentEntry  = lazy(() => import('./components/ParentEntry'))
+const WatchView    = lazy(() => import('./components/WatchView'))
 
 const SPINNER = <div style={{ display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',fontSize:32 }}>⏳</div>
 
@@ -41,6 +42,7 @@ function AppRouter() {
   if (hash === '#admin')   return <Suspense fallback={SPINNER}><AdminPanel /></Suspense>
   if (hash === '#teacher') return <Suspense fallback={SPINNER}><TeacherPanel /></Suspense>
   if (hash === '#parent')  return <Suspense fallback={SPINNER}><ParentEntry /></Suspense>
+  if (hash === '#watch')   return <Suspense fallback={SPINNER}><WatchView /></Suspense>
   return <App />
 }
 
