@@ -152,7 +152,7 @@ export const DEFAULT_ACHIEVEMENTS = [
   { id: 'reading10',   emoji: '📖', name: '阅读达人',   type: 'taskCount', threshold: 10,   templateId: 't2', active: true },
   { id: 'homework20',  emoji: '📝', name: '学习小能手', type: 'taskCount', threshold: 20,   templateId: 't1', active: true },
   { id: 'earlybird10', emoji: '⏰', name: '早起小英雄', type: 'taskCount', threshold: 10,   templateId: 't5', active: true },
-  { id: 'maxStage',    emoji: '🦋', name: '破茧成蝶',   type: 'petStage',  threshold: 4,    active: true },
+  { id: 'maxStage',    emoji: '🦋', name: '破茧成蝶',   type: 'petStage',  threshold: 7,    active: true },
 ]
 
 export function evaluateAchievement(a, state) {
@@ -188,9 +188,12 @@ const BASE_PET_TYPES = {
     isPremium: false,
     stages: [
       { name: '小奶狗',   level: 'lv1' },
+      { name: '软萌幼犬', level: 'lv2' },
       { name: '活泼幼犬', level: 'lv3' },
       { name: '精灵梗犬', level: 'lv4' },
+      { name: '勇敢梗犬', level: 'lv5' },
       { name: '守护神犬', level: 'lv6' },
+      { name: '圣光战犬', level: 'lv7' },
       { name: '圣翼天使', level: 'lv8' },
     ],
   },
@@ -202,9 +205,12 @@ const BASE_PET_TYPES = {
     isPremium: false,
     stages: [
       { name: '小龙蛋',   level: 'lv1' },
+      { name: '破壳幼龙', level: 'lv2' },
       { name: '幼龙',     level: 'lv3' },
       { name: '青龙少年', level: 'lv4' },
-      { name: '青龙',     level: 'lv6' },
+      { name: '青龙',     level: 'lv5' },
+      { name: '怒涛青龙', level: 'lv6' },
+      { name: '苍穹真龙', level: 'lv7' },
       { name: '神龙至尊', level: 'lv8' },
     ],
   },
@@ -216,9 +222,12 @@ const BASE_PET_TYPES = {
     isPremium: false,
     stages: [
       { name: '粉嫩小马',   level: 'lv1' },
+      { name: '萌角小马',   level: 'lv2' },
       { name: '灵角幼马',   level: 'lv3' },
       { name: '灵角马',     level: 'lv4' },
+      { name: '星辉独角兽', level: 'lv5' },
       { name: '彩虹独角兽', level: 'lv6' },
+      { name: '圣洁天马',   level: 'lv7' },
       { name: '神话飞马',   level: 'lv8' },
     ],
   },
@@ -230,9 +239,12 @@ const BASE_PET_TYPES = {
     isPremium: false,
     stages: [
       { name: '柯基幼崽',   level: 'lv1' },
+      { name: '奶凶小柯',   level: 'lv2' },
       { name: '胖臀小柯',   level: 'lv3' },
       { name: '肥臀柯基',   level: 'lv4' },
+      { name: '威风柯基',   level: 'lv5' },
       { name: '神气柯基',   level: 'lv6' },
+      { name: '黄金柯基',   level: 'lv7' },
       { name: '金翼柯基王', level: 'lv8' },
     ],
   },
@@ -244,9 +256,12 @@ const BASE_PET_TYPES = {
     isPremium: true,
     stages: [
       { name: '软萌虎崽',   level: 'lv1' },
+      { name: '调皮虎仔',   level: 'lv2' },
       { name: '少年白虎',   level: 'lv3' },
       { name: '苍穹幼虎',   level: 'lv4' },
+      { name: '啸月白虎',   level: 'lv5' },
       { name: '神威白虎',   level: 'lv6' },
+      { name: '雷霆虎王',   level: 'lv7' },
       { name: '金翅神兽',   level: 'lv8' },
     ],
   },
@@ -258,9 +273,12 @@ const BASE_PET_TYPES = {
     isPremium: true,
     stages: [
       { name: '火凤幼雏',   level: 'lv1' },
+      { name: '焰羽雏鸟',   level: 'lv2' },
       { name: '烈焰少年',   level: 'lv3' },
       { name: '赤焰朱雀',   level: 'lv4' },
+      { name: '炽羽朱雀',   level: 'lv5' },
       { name: '凤凰涅槃',   level: 'lv6' },
+      { name: '业火天凰',   level: 'lv7' },
       { name: '神火天尊',   level: 'lv8' },
     ],
   },
@@ -276,9 +294,12 @@ const BASE_PET_TYPES = {
     seasonal: { start: '01-20', end: '02-20' },
     stages: [
       { name: '龙蛋',       level: 'lv1' },
+      { name: '瑞气破壳',   level: 'lv2' },
       { name: '瑞气幼龙',   level: 'lv3' },
       { name: '吉祥青龙',   level: 'lv4' },
+      { name: '祥瑞青龙',   level: 'lv5' },
       { name: '瑞龙',       level: 'lv6' },
+      { name: '七彩瑞龙',   level: 'lv7' },
       { name: '神龙驾云',   level: 'lv8' },
     ],
   },
@@ -292,9 +313,12 @@ const BASE_PET_TYPES = {
     seasonal: { start: '09-12', end: '09-22' },
     stages: [
       { name: '月光幼兔',   level: 'lv1' },
+      { name: '团子小兔',   level: 'lv2' },
       { name: '捣药小兔',   level: 'lv3' },
       { name: '广寒玉兔',   level: 'lv4' },
+      { name: '银辉玉兔',   level: 'lv5' },
       { name: '月宫灵兔',   level: 'lv6' },
+      { name: '太阴仙兔',   level: 'lv7' },
       { name: '太阴神兔',   level: 'lv8' },
     ],
   },
@@ -308,9 +332,12 @@ const BASE_PET_TYPES = {
     seasonal: { start: '10-24', end: '11-01' },
     stages: [
       { name: '小南瓜',     level: 'lv1' },
+      { name: '鬼脸南瓜',   level: 'lv2' },
       { name: '皮皮精',     level: 'lv3' },
       { name: '南瓜精灵',   level: 'lv4' },
+      { name: '巫法南瓜',   level: 'lv5' },
       { name: '万圣幽灵',   level: 'lv6' },
+      { name: '暗影南瓜王', level: 'lv7' },
       { name: '暗夜之主',   level: 'lv8' },
     ],
   },
@@ -324,9 +351,12 @@ const BASE_PET_TYPES = {
     seasonal: { start: '12-20', end: '12-31' },
     stages: [
       { name: '雪地小鹿',   level: 'lv1' },
+      { name: '绒球小鹿',   level: 'lv2' },
       { name: '铃铛小鹿',   level: 'lv3' },
       { name: '雪绒驯鹿',   level: 'lv4' },
+      { name: '银雪驯鹿',   level: 'lv5' },
       { name: '圣诞神鹿',   level: 'lv6' },
+      { name: '星辉神鹿',   level: 'lv7' },
       { name: '极光之鹿',   level: 'lv8' },
     ],
   },
@@ -342,8 +372,8 @@ export const PET_TYPES = _admin.petTypes
     )
   : BASE_PET_TYPES
 
-// 进化经验阈值（对应 5 阶段，需要 4 个阈值）
-const EXP_THRESHOLDS = _admin.expThresholds ?? [200, 450, 750, 1100]
+// 进化经验阈值（对应 8 阶段，需要 7 个阈值；前期快、后期慢，符合儿童即时反馈）
+const EXP_THRESHOLDS = _admin.expThresholds ?? [80, 200, 380, 620, 920, 1300, 1800]
 
 export function getPetImageUrl(petType, stageIndex) {
   const pet = PET_TYPES[petType]

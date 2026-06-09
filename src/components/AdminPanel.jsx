@@ -4,7 +4,7 @@ import { PET_TYPES, getPetImageUrl, getAchievements, DEFAULT_ACHIEVEMENTS } from
 const ADMIN_KEY = 'petAdminConfig'
 const APP_KEY = 'petLearningApp'
 
-const DEFAULT_THRESHOLDS = [250, 550, 950]
+const DEFAULT_THRESHOLDS = [80, 200, 380, 620, 920, 1300, 1800]
 const DEFAULT_TEMPLATES = [
   { id: 't1', name: '完成作业', points: 12, icon: '📝' },
   { id: 't2', name: '阅读20分钟', points: 10, icon: '📚' },
@@ -52,8 +52,9 @@ export default function AdminPanel() {
   }
 
   function saveAll() {
-    const [t1, t2, t3] = thresholds
-    if (t1 <= 0 || t2 <= t1 || t3 <= t2) {
+    const validThresholds = thresholds.length > 0 && thresholds[0] > 0 &&
+      thresholds.every((t, i) => i === 0 || t > thresholds[i - 1])
+    if (!validThresholds) {
       showToast('⚠️ 进化阈值必须依次递增且大于 0！')
       return
     }
@@ -229,23 +230,28 @@ function PetsTab({ pets, setPets }) {
 
 // ─── 进化阈值 ────────────────────────────────────────
 function ThresholdsTab({ thresholds, setThresholds }) {
-  const [t1, t2, t3] = thresholds
-  const max = t3 + 300
+  const n = thresholds.length                 // 阈值数 = 进化阶段数 - 1
+  const last = thresholds[n - 1] || 0
+  const max = last + 300
+  const segColors = ['#b7eb8f', '#ffd591', '#91caff', '#ffadd2', '#d3adf7', '#ffe58f', '#87e8de', '#ffbb96']
+  const barColors = ['#52c41a', '#faad14', '#1677ff', '#eb2f96', '#722ed1', '#d4b106', '#13c2c2', '#fa541c']
+  // n+1 个经验区段，对应 n+1 个进化阶段
   const segments = [
-    { label: '阶段 1', from: 0, to: t1, color: '#b7eb8f' },
-    { label: '阶段 2', from: t1, to: t2, color: '#ffd591' },
-    { label: '阶段 3', from: t2, to: t3, color: '#91caff' },
-    { label: '阶段 4', from: t3, to: max, color: '#ffadd2' },
+    ...thresholds.map((t, i) => ({
+      label: `阶段 ${i + 1}`,
+      from: i === 0 ? 0 : thresholds[i - 1],
+      to: t,
+      color: segColors[i % segColors.length],
+    })),
+    { label: `阶段 ${n + 1}`, from: last, to: max, color: segColors[n % segColors.length] },
   ]
-  const stageLabels = ['阶段1 → 2', '阶段2 → 3', '阶段3 → 4']
-  const barColors = ['#52c41a', '#faad14', '#1677ff']
 
   return (
     <div style={{ maxWidth: 660 }}>
       <div style={S.card}>
         <div style={S.sectionTitle}>经验值进化阈值</div>
         <p style={{ color: '#888', fontSize: 14, marginTop: 4, marginBottom: 24 }}>
-          孩子完成任务积累经验值，达到阈值后宠物进化到下一阶段。
+          孩子完成任务积累经验值，达到阈值后宠物进化到下一阶段。当前共 {n + 1} 个进化阶段。
         </p>
 
         {/* Visual bar */}
@@ -255,12 +261,12 @@ function ThresholdsTab({ thresholds, setThresholds }) {
               <div
                 key={i}
                 style={{
-                  flex: seg.to - seg.from,
+                  flex: Math.max(1, seg.to - seg.from),
                   background: seg.color,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 700,
                   color: '#444',
                 }}
@@ -276,24 +282,24 @@ function ThresholdsTab({ thresholds, setThresholds }) {
           </div>
         </div>
 
-        {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {stageLabels.map((label, i) => (
+        {/* Inputs（按阈值数量动态渲染） */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {thresholds.map((t, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ width: 110, fontSize: 14, fontWeight: 700, color: '#444', flexShrink: 0 }}>{label}</div>
+              <div style={{ width: 110, fontSize: 14, fontWeight: 700, color: '#444', flexShrink: 0 }}>阶段{i + 1} → {i + 2}</div>
               <div style={{ flex: 1, height: 6, background: '#f0f0f0', borderRadius: 6, overflow: 'hidden' }}>
-                <div style={{ width: `${(thresholds[i] / max) * 100}%`, height: '100%', background: barColors[i], transition: 'width 0.3s' }} />
+                <div style={{ width: `${Math.min(100, (t / max) * 100)}%`, height: '100%', background: barColors[i % barColors.length], transition: 'width 0.3s' }} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
                 <span style={{ fontSize: 13, color: '#999' }}>需经验</span>
                 <input
                   type="number"
                   style={{ ...S.input, width: 90, textAlign: 'center' }}
-                  value={thresholds[i]}
+                  value={t}
                   min={i > 0 ? thresholds[i - 1] + 1 : 1}
                   onChange={e => {
                     const v = Math.max(1, parseInt(e.target.value) || 0)
-                    setThresholds(prev => prev.map((t, idx) => idx === i ? v : t))
+                    setThresholds(prev => prev.map((x, idx) => idx === i ? v : x))
                   }}
                 />
               </div>
@@ -302,7 +308,7 @@ function ThresholdsTab({ thresholds, setThresholds }) {
         </div>
 
         <div style={{ marginTop: 24, padding: '12px 16px', background: '#f9f9f9', borderRadius: 10, fontSize: 13, color: '#666' }}>
-          💡 默认阈值：<b>250</b> / <b>550</b> / <b>950</b> 经验
+          💡 默认 8 阶段阈值：<b>80 / 200 / 380 / 620 / 920 / 1300 / 1800</b> 经验
         </div>
       </div>
     </div>
