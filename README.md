@@ -125,7 +125,7 @@ public/pets/<type>/lv1~lv8.png   # 透明底宠物美术（6 类 × 8 阶）
 
 ## 📄 License
 
-[MIT](LICENSE) © 2026
+[MIT](LICENSE) © 2026 William
 
 > 作品集项目，宠物美术资源来自开源仓库 `class-pet-garden`（已做透明化处理）。
 > Portfolio project. Pet artwork derived from the open-source `class-pet-garden` repo.
